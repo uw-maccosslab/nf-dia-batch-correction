@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<views>
+  <view name="precursor_quality" rowsource="pwiz.Skyline.Model.Databinding.Entities.Precursor" sublist="Results!*" uimode="proteomic">
+    <column name="Peptide.Protein.Accession" />
+    <column name="Peptide.Protein.Name" />
+    <column name="" />
+    <column name="Peptide" />
+    <column name="Charge" />
+    <column name="Mz" />
+    <column name="ModifiedSequence" />
+    <column name="Results!*.Value.PeptideResult.ResultFile.Replicate.Name" />
+    <column name="Results!*.Value.AverageMassErrorPPM" />
+    <column name="Results!*.Value.TotalAreaFragment" />
+    <column name="Results!*.Value.TotalAreaMs1" />
+    <column name="Results!*.Value.BestRetentionTime" />
+    <column name="Results!*.Value.MinStartTime" />
+    <column name="Results!*.Value.MaxEndTime" />
+    <column name="Results!*.Value.MaxFwhm" />
+    <column name="Results!*.Value.PeptideResult.Quantification.NormalizedArea" />
+    <column name="Results!*.Value.LibraryDotProduct" />
+    <column name="Results!*.Value.IsotopeDotProduct" />
+  </view>
+</views>
