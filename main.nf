@@ -4,9 +4,7 @@ nextflow.enable.dsl = 2
 
 // Sub workflows
 include { export_reports } from "./workflows/export_reports.nf"
-
-// modules
-include { MERGE_REPORTS } from "./modules/skyline"
+include { batch_correction } from "./workflows/batch_correction.nf"
 
 workflow {
 
@@ -15,8 +13,6 @@ workflow {
 
     export_reports(skyline_paths, metadata_paths) 
     
-    // MERGE_REPORTS(study_names.collect(),
-    //               replicate_reports.collect(),
-    //               precursor_reports.collect(),
-    //               metadatas.collect())
+    batch_correction(export_reports.out.study_names, export_reports.out.metadatas, 
+                     export_reports.out.replicate_reports, export_reports.out.precursor_reports)
 }
