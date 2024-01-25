@@ -25,7 +25,7 @@ process UNZIP_SKY_FILE {
     """
 }
 
-process SKYLINE_EXPORT_REPORT {
+process SKYLINE_EXPORT_REPORTS {
     publishDir "${params.result_dir}/skyline/reports", failOnError: true, mode: 'copy'
     label 'process_high_memory'
     // label 'error_retry'
@@ -33,18 +33,24 @@ process SKYLINE_EXPORT_REPORT {
 
     input:
         tuple val(study_name), path(sky_file), path(skyd_file), path(lib_file)
-        path report_template
+        path replicate_report_template
+        path precursor_report_template
 
     output:
-        tuple val(study_name), path("*.tsv")
+        tuple val(study_name), path("*_replicate_quality.tsv"), path("*_precursor_quality.tsv")
 
     script:
     """
-    wine SkylineCmd --in="${sky_file}" \
-        --report-add="${report_template}" \
-        --report-conflict-resolution="overwrite" --report-format="tsv" --report-invariant \
-        --report-name="${report_template.baseName}" \
-        --report-file="${study_name}_${report_template.baseName}.tsv"
+    # Write batch commands to file
+    echo '--in=${sky_file}' > batch_commands.bat
+    echo '--report-add=${replicate_report_template} --report-conflict-resolution="overwrite"' >> batch_commands.bat
+    echo '--report-add=${precursor_report_template} --report-conflict-resolution="overwrite"' >> batch_commands.bat
+    echo '--report-format="tsv" --report-invariant --report-name="${replicate_report_template.baseName}" --report-file="${study_name}_${replicate_report_template.baseName}.tsv"' >> batch_commands.bat
+    echo '--report-format="tsv" --report-invariant --report-name="${precursor_report_template.baseName}" --report-file="${study_name}_${precursor_report_template.baseName}.tsv"' >> batch_commands.bat
+
+    # Export reports
+    wine SkylineCmd --batch-commands='batch_commands.bat' \
+        > >(tee "export_reports.stdout") 2> >(tee "export_reports.stderr")
     """
 
     stub:
