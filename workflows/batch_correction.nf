@@ -22,7 +22,8 @@ workflow batch_correction {
         // Merge tsv reports into database and render rmd report
         MERGE_REPORTS(study_names.collect(), replicate_reports.collect(),
                       precursor_reports.collect(), metadatas.collect())
-        NORMALIZE_DB(MERGE_REPORTS.out.final_db) | GENERATE_BATCH_RMD
+        NORMALIZE_DB(MERGE_REPORTS.out.final_db)
+        GENERATE_BATCH_RMD(NORMALIZE_DB.out.normalized_db)
         RENDER_BATCH_RMD(GENERATE_BATCH_RMD.out.bc_rmd, NORMALIZE_DB.out.normalized_db)
 
         normalized_db = NORMALIZE_DB.out.normalized_db

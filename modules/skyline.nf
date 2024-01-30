@@ -29,7 +29,7 @@ process SKYLINE_EXPORT_REPORTS {
     publishDir "${params.result_dir}/skyline/reports", failOnError: true, mode: 'copy'
     label 'process_high_memory'
     // label 'error_retry'
-    container 'quay.io/protio/pwiz-skyline-i-agree-to-the-vendor-licenses:3.0.23187-2243781'
+    container 'quay.io/protio/pwiz-skyline-i-agree-to-the-vendor-licenses:3.0.24020-c3a52ef'
 
     input:
         tuple val(study_name), path(sky_file), path(skyd_file), path(lib_file)
@@ -37,7 +37,9 @@ process SKYLINE_EXPORT_REPORTS {
         path precursor_report_template
 
     output:
-        tuple val(study_name), path("*_replicate_quality.tsv"), path("*_precursor_quality.tsv")
+        tuple val(study_name), path("*_replicate_quality.tsv"), path("*_precursor_quality.tsv"), emit: reports
+        path("*.stdout"), emit: stdout
+        path("*.stderr"), emit: stderr
 
     script:
     """
@@ -50,13 +52,14 @@ process SKYLINE_EXPORT_REPORTS {
 
     # Export reports
     wine SkylineCmd --batch-commands='batch_commands.bat' \
-        > >(tee "export_reports.stdout") 2> >(tee "export_reports.stderr")
-    """
+        > >(tee 'export_reports.stdout') 2> >(tee 'export_reports.stderr' >&2)
+    '''
 
     stub:
     """
-    touch "${study_name}_${report_template.baseName}.tsv"
-    touch skyline-export-report.log
+    touch "${study_name}_${replicate_report_template.baseName}.tsv"
+    touch "${study_name}_${precursor_report_template.baseName}.tsv"
+    touch stub.stdout stub.stderr
     """
 }
 

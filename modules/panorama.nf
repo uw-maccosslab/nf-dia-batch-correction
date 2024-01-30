@@ -29,12 +29,13 @@ process PANORAMA_GET_FILE {
             -d \
             -w "${file_path}" \
             -k \$PANORAMA_API_KEY \
-            1>"panorama-get-${file_name}.stdout" 2>"panorama-get-${file_name}.stderr"
+            > >(tee "panorama-get-${file_name}.stdout") 2> >("panorama-get-${file_name}.stderr" >&2)
         echo "Done!" # Needed for proper exit
         """
 
     stub:
         """
         touch "${url_name_to_file_name(file(file_path).name)}"
+        touch stub.stdout stub.stderr
         """
 }
