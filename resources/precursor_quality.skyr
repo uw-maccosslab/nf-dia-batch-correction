@@ -15,6 +15,7 @@
     <column name="Results!*.Value.BestRetentionTime" />
     <column name="Results!*.Value.MinStartTime" />
     <column name="Results!*.Value.MaxEndTime" />
+    <column name="Results!*.Value.UserSetTotal" />
     <column name="Results!*.Value.MaxFwhm" />
     <column name="Results!*.Value.PeptideResult.Quantification.NormalizedArea" />
     <column name="Results!*.Value.LibraryDotProduct" />
