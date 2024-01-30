@@ -15,8 +15,21 @@ workflow export_reports {
         replicate_reports
         precursor_reports
         metadatas
-    
+
     main:
+        // get report templates
+        if(params.replicate_report_template.startsWith("https://panoramaweb.org/_webdav")) {
+            PANORAMA_GET_REPLICATE_SKYR(params.replicate_report_template)
+            replicate_skyr = PANORAMA_GET_REPLICATE_SKYR.out.panorama_file
+        } else {
+            replicate_skyr = file(params.replicate_report_template, checkIfExists: true)
+        }
+        if(params.precursor_report_template.startsWith("https://panoramaweb.org/_webdav")) {
+            PANORAMA_GET_PRECUSOR_SKYR(params.precursor_report_template)
+            precursor_skyr = PANORAMA_GET_PRECUSOR_SKYR.out.panorama_file
+        } else {
+            precursor_skyr = file(params.precursor_report_template, checkIfExists: true)
+        }
 
         // collect skyline files
         skyline_paths.branch{
@@ -30,7 +43,7 @@ workflow export_reports {
 
         UNZIP_SKY_FILE(skyline_docs)
         skyline_files = UNZIP_SKY_FILE.out.files
-        
+
         // collect metadata files
         metadata_paths.branch{
             panorama_files: it[1].startsWith("https://")
