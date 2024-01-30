@@ -8,7 +8,7 @@ This workflow performs normalization and batch correction on one or more Skyline
 2. Exports precursor and replicate level `.tsv` reports from each document
 3. Combine `.tsv` reports into a single `sqlite` batch database
 4. Perform precursor median normalization and protein DirectLFQ normalization and store normalizaed values in batch database
-5. Generate an Rmarkdown document which compiles to a batch correction report
+5. Generate an Rmarkdown document which renders to a `.html` batch correction report
 
 ## Replicate metadata format
 Replicate metadata annotations can be given to specify variabels to use in the batch correction report. The metadata files should be `.tsv` files where the first column has the header `Replicate` and additional columns for each metadata variable.
