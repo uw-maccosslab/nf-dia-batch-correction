@@ -29,7 +29,7 @@ process PANORAMA_GET_FILE {
             -d \
             -w "${file_path}" \
             -k \$PANORAMA_API_KEY \
-            > >(tee "panorama-get-${file_name}.stdout") 2> >("panorama-get-${file_name}.stderr" >&2)
+            > >(tee "panorama-get-${file_name}.stdout") 2> >(tee "panorama-get-${file_name}.stderr" >&2)
         echo "Done!" # Needed for proper exit
         """
 
