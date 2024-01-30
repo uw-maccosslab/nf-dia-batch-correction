@@ -41,14 +41,18 @@ process SKYLINE_EXPORT_REPORTS {
         path("*.stdout"), emit: stdout
         path("*.stderr"), emit: stderr
 
-    script:
-    """
+    shell:
+    '''
     # Write batch commands to file
-    echo '--in=${sky_file}' > batch_commands.bat
-    echo '--report-add=${replicate_report_template} --report-conflict-resolution="overwrite"' >> batch_commands.bat
-    echo '--report-add=${precursor_report_template} --report-conflict-resolution="overwrite"' >> batch_commands.bat
-    echo '--report-format="tsv" --report-invariant --report-name="${replicate_report_template.baseName}" --report-file="${study_name}_${replicate_report_template.baseName}.tsv"' >> batch_commands.bat
-    echo '--report-format="tsv" --report-invariant --report-name="${precursor_report_template.baseName}" --report-file="${study_name}_${precursor_report_template.baseName}.tsv"' >> batch_commands.bat
+    echo "--in=\\"!{sky_file}\\"" | sed 's/\\\\//g' > batch_commands.bat
+
+    for report in !{replicate_report_template} !{precursor_report_template} ; do
+        echo "--report-add=\\"$report\\" --report-conflict-resolution=overwrite" | sed 's/\\\\//g' >> batch_commands.bat
+    done
+    
+    for name in '!{replicate_report_template.baseName}' '!{precursor_report_template.baseName}' ; do
+        echo "--report-format=tsv --report-invariant --report-name=\\"$name\\" --report-file=\\"!{study_name}_${name}.tsv\\"" | sed 's/\\\\//g' >> batch_commands.bat
+    done
 
     # Export reports
     wine SkylineCmd --batch-commands='batch_commands.bat' \
