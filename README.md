@@ -10,6 +10,14 @@ This workflow performs normalization and batch correction on one or more Skyline
 4. Perform precursor median normalization and protein DirectLFQ normalization and store normalizaed values in batch database
 5. Generate an Rmarkdown document which renders to a `.html` batch correction report
 
+## How to run the workflow
+
+```
+nextflow run -r master uw-maccosslab/nf-dia-batch-correction -c pipeline.config
+```
+
+A template pipeline config is [here](https://raw.githubusercontent.com/uw-maccosslab/nf-dia-batch-correction/master/resources/pipeline.config). The required and optional parameters are described below.
+
 ## Replicate metadata format
 Replicate metadata annotations can be given to specify variabels to use in the batch correction report. The metadata files should be `.tsv` files where the first column has the header `Replicate` and additional columns for each metadata variable.
 
