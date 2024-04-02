@@ -31,8 +31,8 @@ Replicate metadata annotations can be given to specify variabels to use in the b
 | Parameter | Required | Type | Description |
 | --------- | :----: | :----: | ----------- |
 | `documents` | :white_check_mark: | `Map` | A nested `Map` of Skyline documents and metadata files with the following syntax: <pre>['<project_1>':<br>   ['skyline': '<path_to_skyline_doc>',<br>    'metadata': '<path_to_metadata_tsv>'] <br>['<project_2>':<br>   ['skyline': '<path_to_skyline_doc>',<br>    'metadata': '<path_to_metadata_tsv>'], <br>  ... ] </pre> There is a slot in the top level `Map` for each Skyline document. The key is a unique project name for the document. The sub-map should have 2 slots. They first has key `skyline` with the path to the Skyline document, and the second has key `metadata` with the path to the metadata annotations for the replicates in the document. File paths can be local file paths or Panorama WebDav urls. |
-| `precursor_report_template` | :white_check_mark: | `String` | Path to precursor quality report template. |
-| `replicate_report_template` | :white_check_mark: | `String` | Path to replicate quality report template. |
+| `precursor_report_template` |  | `String` | Path to precursor quality report template. By default the report template in the (resources)[https://github.com/uw-maccosslab/nf-dia-batch-correction/tree/master/resources] directory in the git repo is used. |
+| `replicate_report_template` |  | `String` | Path to replicate quality report template. By default the report template in the (resources)[https://github.com/uw-maccosslab/nf-dia-batch-correction/tree/master/resources] directory in the git repo is used. |
 | `bc.method` |  | `String` | Batch correction method. Either `combat` or `limma`. `combat` is the default. |
 | `bc.batch1` |  | `String` | Metadata key for batch level 1. If `null`, the project name in `documents` is used as the batch variable. |
 | `bc.batch2` |  | `String` | Metadata key for batch level 2. A second batch level is only supported with `limma` as the batch correction method. |

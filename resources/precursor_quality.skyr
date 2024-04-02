@@ -3,6 +3,7 @@
   <view name="precursor_quality" rowsource="pwiz.Skyline.Model.Databinding.Entities.Precursor" sublist="Results!*" uimode="proteomic">
     <column name="Peptide.Protein.Accession" />
     <column name="Peptide.Protein.Name" />
+    <column name="Peptide.Protein.Gene" />
     <column name="" />
     <column name="Peptide" />
     <column name="Charge" />

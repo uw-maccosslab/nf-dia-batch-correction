@@ -2,6 +2,7 @@
 <views>
   <view name="replicate_quality" rowsource="pwiz.Skyline.Model.Databinding.Entities.Replicate" sublist="Files!*" uimode="proteomic">
     <column name="" />
+    <column name="Files!*.FileName" />
     <column name="Files!*.AcquiredTime" />
     <column name="Files!*.TicArea" />
   </view>
