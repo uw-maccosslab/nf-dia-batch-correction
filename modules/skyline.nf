@@ -29,7 +29,7 @@ process SKYLINE_EXPORT_REPORTS {
     publishDir "${params.result_dir}/skyline/reports", failOnError: true, mode: 'copy'
     label 'process_high_memory'
     // label 'error_retry'
-    container 'quay.io/protio/pwiz-skyline-i-agree-to-the-vendor-licenses:3.0.24020-c3a52ef'
+    container 'proteowizard/pwiz-skyline-i-agree-to-the-vendor-licenses:skyline_24.1.0.198-6a0775e'
 
     input:
         tuple val(study_name), path(sky_file), path(skyd_file), path(lib_file)
