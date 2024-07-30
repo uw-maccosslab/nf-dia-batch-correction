@@ -18,7 +18,6 @@
     <column name="Results!*.Value.MaxEndTime" />
     <column name="Results!*.Value.UserSetTotal" />
     <column name="Results!*.Value.MaxFwhm" />
-    <column name="Results!*.Value.PeptideResult.Quantification.NormalizedArea" />
     <column name="Results!*.Value.LibraryDotProduct" />
     <column name="Results!*.Value.IsotopeDotProduct" />
   </view>
