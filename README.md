@@ -35,6 +35,7 @@ Replicate metadata annotations can be given to specify variabels to use in the b
 | `replicate_report_template` |  | `String` | Path to replicate quality report template. By default the report template in the [resources](https://github.com/uw-maccosslab/nf-dia-batch-correction/tree/master/resources) directory in the git repo is used. |
 | `normalize_db.exclude_replicates` |  | `String`, `List` | Exclude replicate(s) from normalizaton and batch correction. If `null`, all replicates are included. Default is `null`. |
 | `normalize_db.exclude_projects` |  | `String`, `List` | Exclude Skyline document(s) from normalizaton and batch correction. If `null`, all Skyline documents are included. Default is `null`. |
+| `normalize_db.method` |  | `String` | Normalization method to use. Available options are `DirectLFQ` and `median`. Default is `DirectLFQ` |
 | `bc.method` |  | `String` | Batch correction method. Either `combat` or `limma`. `combat` is the default. |
 | `bc.batch1` |  | `String` | Metadata key for batch level 1. If `null`, the project name in `documents` is used as the batch variable. |
 | `bc.batch2` |  | `String` | Metadata key for batch level 2. A second batch level is only supported with `limma` as the batch correction method. |
