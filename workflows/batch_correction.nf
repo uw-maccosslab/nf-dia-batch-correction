@@ -18,7 +18,7 @@ workflow batch_correction {
         bc_tsv_reports
 
     main:
-        
+
         // Merge tsv reports into database and render rmd report
         MERGE_REPORTS(study_names.collect(), replicate_reports.collect(),
                       precursor_reports.collect(), metadatas.collect())

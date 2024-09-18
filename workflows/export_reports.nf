@@ -1,5 +1,6 @@
 
 include { SKYLINE_EXPORT_REPORTS } from "../modules/skyline.nf"
+include { SKYLINE_EXPORT_ANNOTATIONS } from "../modules/skyline.nf"
 include { UNZIP_SKY_FILE } from "../modules/skyline.nf"
 include { PANORAMA_GET_FILE as PANORAMA_GET_SKYLINE_DOC } from "../modules/panorama.nf"
 include { PANORAMA_GET_FILE as PANORAMA_GET_METADATA } from "../modules/panorama.nf"
@@ -47,13 +48,23 @@ workflow export_reports {
 
         // collect metadata files
         metadata_paths.branch{
+            sky_metadata: it[1] == null
             panorama_files: it[1].startsWith("https://")
             local_files: true
                 return [it[0], file(it[1], checkIfExists: true)]
             }.set{metadata_files}
 
+        // export annotations from applicable skyline files
+        metadata_files.sky_metadata.join(skyline_files).map{
+            it -> tuple(it[0], it[2], it[3])
+        } | SKYLINE_EXPORT_ANNOTATIONS
+
         PANORAMA_GET_METADATA(metadata_files.panorama_files)
-        metadata = PANORAMA_GET_METADATA.out.concat(metadata_files.local_files)
+
+        metadata = SKYLINE_EXPORT_ANNOTATIONS.out.concat(
+            PANORAMA_GET_METADATA.out,
+            metadata_files.local_files
+        )
 
         SKYLINE_EXPORT_REPORTS(skyline_files, replicate_skyr, precursor_skyr)
 

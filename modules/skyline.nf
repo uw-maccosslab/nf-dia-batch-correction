@@ -8,7 +8,7 @@ process UNZIP_SKY_FILE {
         tuple val(study_name), path(sky_zip_file)
 
     output:
-        tuple val(study_name), path("*.sky"), path("*.skyd"), path("*.[eb]lib"), emit: files
+        tuple val(study_name), path("*.sky"), path("*.{skyd,[eb]lib,[eb]libc,protdb,sky.view}"), emit: files
         path("*.archive_files.txt"), emit: log
 
     script:
@@ -25,14 +25,41 @@ process UNZIP_SKY_FILE {
     """
 }
 
-process SKYLINE_EXPORT_REPORTS {
+process SKYLINE_EXPORT_ANNOTATIONS {
     publishDir "${params.result_dir}/skyline/reports", failOnError: true, mode: 'copy'
     label 'process_high_memory'
-    // label 'error_retry'
+    label 'error_retry'
     container 'proteowizard/pwiz-skyline-i-agree-to-the-vendor-licenses:skyline_24.1.0.198-6a0775e'
 
     input:
-        tuple val(study_name), path(sky_file), path(skyd_file), path(lib_file)
+        tuple val(study_name), path(sky_file), path(sky_artifacts)
+
+    output:
+        tuple val(study_name), path('*_annotations.csv'), emit: reports
+
+    shell:
+    '''
+    wine SkylineCmd --in="!{sky_file}" \
+        --exp-annotations="!{study_name}_annotations.csv" \
+        --exp-annotations-include-object=Replicate \
+        > >(tee 'export_annotations.stdout') 2> >(tee 'export_annotations.stderr' >&2)
+    '''
+
+    stub:
+    """
+    touch "${study_name}_annotations.csv"
+    touch stub.stdout stub.stderr
+    """
+}
+
+process SKYLINE_EXPORT_REPORTS {
+    publishDir "${params.result_dir}/skyline/reports", failOnError: true, mode: 'copy'
+    label 'process_high_memory'
+    label 'error_retry'
+    container 'proteowizard/pwiz-skyline-i-agree-to-the-vendor-licenses:skyline_24.1.0.198-6a0775e'
+
+    input:
+        tuple val(study_name), path(sky_file), path(sky_artifacts)
         path replicate_report_template
         path precursor_report_template
 
@@ -49,7 +76,7 @@ process SKYLINE_EXPORT_REPORTS {
     for report in !{replicate_report_template} !{precursor_report_template} ; do
         echo "--report-add=\\"$report\\" --report-conflict-resolution=overwrite" | sed 's/\\\\//g' >> batch_commands.bat
     done
-    
+
     for name in '!{replicate_report_template.baseName}' '!{precursor_report_template.baseName}' ; do
         echo "--report-format=tsv --report-invariant --report-name=\\"$name\\" --report-file=\\"!{study_name}_${name}.tsv\\"" | sed 's/\\\\//g' >> batch_commands.bat
     done
