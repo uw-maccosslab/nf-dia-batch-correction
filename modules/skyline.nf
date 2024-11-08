@@ -2,7 +2,7 @@
 process UNZIP_SKY_FILE {
     publishDir "${params.result_dir}/skyline/unzip", failOnError: true, pattern: '*.archive_files.txt', mode: 'copy'
     label 'process_high_memory'
-    container 'mauraisa/aws_bash:0.5'
+    container params.images.ubuntu
 
     input:
         tuple val(study_name), path(sky_zip_file)
@@ -29,7 +29,7 @@ process SKYLINE_EXPORT_ANNOTATIONS {
     publishDir "${params.result_dir}/skyline/reports", failOnError: true, mode: 'copy'
     label 'process_high_memory'
     label 'error_retry'
-    container 'proteowizard/pwiz-skyline-i-agree-to-the-vendor-licenses:skyline_24.1.0.198-6a0775e'
+    container params.images.proteowizard
 
     input:
         tuple val(study_name), path(sky_file), path(sky_artifacts)
@@ -56,7 +56,7 @@ process SKYLINE_EXPORT_REPORTS {
     publishDir "${params.result_dir}/skyline/reports", failOnError: true, mode: 'copy'
     label 'process_high_memory'
     label 'error_retry'
-    container 'proteowizard/pwiz-skyline-i-agree-to-the-vendor-licenses:skyline_24.1.0.198-6a0775e'
+    container params.images.proteowizard
 
     input:
         tuple val(study_name), path(sky_file), path(sky_artifacts)
