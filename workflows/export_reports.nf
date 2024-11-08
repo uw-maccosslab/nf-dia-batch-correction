@@ -2,10 +2,10 @@
 include { SKYLINE_EXPORT_REPORTS } from "../modules/skyline.nf"
 include { SKYLINE_EXPORT_ANNOTATIONS } from "../modules/skyline.nf"
 include { UNZIP_SKY_FILE } from "../modules/skyline.nf"
-include { PANORAMA_GET_FILE as PANORAMA_GET_SKYLINE_DOC } from "../modules/panorama.nf"
-include { PANORAMA_GET_FILE as PANORAMA_GET_METADATA } from "../modules/panorama.nf"
-include { PANORAMA_GET_FILE as PANORAMA_GET_PRECUSOR_SKYR } from "../nf-submodules/modules/panorama.nf"
-include { PANORAMA_GET_FILE as PANORAMA_GET_REPLICATE_SKYR } from "../nf-submodules/modules/panorama.nf"
+include { PANORAMA_GET_PROJECT_FILE as PANORAMA_GET_SKYLINE_DOC } from "../modules/panorama.nf"
+include { PANORAMA_GET_PROJECT_FILE as PANORAMA_GET_METADATA } from "../modules/panorama.nf"
+include { PANORAMA_GET_FILE as PANORAMA_GET_PRECUSOR_SKYR } from "../modules/panorama.nf"
+include { PANORAMA_GET_FILE as PANORAMA_GET_REPLICATE_SKYR } from "../modules/panorama.nf"
 
 workflow export_reports {
     take:
