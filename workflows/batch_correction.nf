@@ -1,8 +1,8 @@
 
-include { MERGE_REPORTS } from "../nf-submodules/modules/qc_report.nf"
-include { NORMALIZE_DB } from "../nf-submodules/modules/qc_report.nf"
-include { GENERATE_BATCH_RMD } from "../nf-submodules/modules/qc_report.nf"
-include { RENDER_BATCH_RMD } from "../nf-submodules/modules/qc_report.nf"
+include { MERGE_REPORTS } from "../modules/batch_report.nf"
+include { NORMALIZE_DB } from "../modules/batch_report.nf"
+include { GENERATE_BATCH_RMD } from "../modules/batch_report.nf"
+include { RENDER_BATCH_RMD } from "../modules/batch_report.nf"
 
 workflow batch_correction {
     take:
