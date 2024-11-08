@@ -2,7 +2,7 @@
 process UNZIP_SKY_FILE {
     publishDir "${params.result_dir}/skyline/unzip", failOnError: true, pattern: '*.archive_files.txt', mode: 'copy'
     label 'process_high_memory'
-    container params.images.ubuntu
+    container params.images.linux
 
     input:
         tuple val(study_name), path(sky_zip_file)
