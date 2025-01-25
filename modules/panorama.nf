@@ -63,6 +63,7 @@ process PANORAMA_GET_PROJECT_FILE {
 process PANORAMA_GET_FILE {
     label 'process_low_constant'
     container params.images.panorama_client
+    maxForks 2
     publishDir "${params.result_dir}/panorama", failOnError: true, mode: 'copy', pattern: "*.stdout"
     publishDir "${params.result_dir}/panorama", failOnError: true, mode: 'copy', pattern: "*.stderr"
     secret 'PANORAMA_API_KEY'
